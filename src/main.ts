@@ -135,9 +135,7 @@ html,body,#canvas{
     iframe.setAttribute("frameborder", "0");
     video.after(iframe);
     iframe.onload = () => {
-      iframe.contentWindow.init(
-        lastComment.filter((thread) => thread.fork === "owner")
-      );
+      iframe.contentWindow.init(lastComment);
       iframe.contentWindow.updateTime(0, true);
       interval = window.setInterval(() => {
         const currentTime = window.__videoplayer.currentTime();
