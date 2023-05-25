@@ -94,15 +94,13 @@ html,body,#canvas{
     if (args[0] === "https://nvcomment.nicovideo.jp/v1/threads") {
       const result = (await request.clone().json()) as unknown;
       if (typeguard.threadsApiResponse(result)) {
-        lastComment = result.data.threads
-          .filter((thread) => thread.fork === "owner")
-          .map((thread) => {
-            thread.comments = thread.comments.map((comment) => {
-              comment.commands.push("invisible");
-              return comment;
-            });
-            return thread;
+        lastComment = result.data.threads.map((thread) => {
+          thread.comments = thread.comments.map((comment) => {
+            comment.commands.push("invisible");
+            return comment;
           });
+          return thread;
+        });
       }
     }
     return request;
