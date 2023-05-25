@@ -37,8 +37,7 @@ jobs:
         run: pnpm build
       - name: setup sandbox
         run: |
-          mkdir ./docs
-          cp ./dist/bundle.js ./docs/
+          cp ./dist/bundle.js ./docs/niwango-live-loader.user.js
       - name: Create new Branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
