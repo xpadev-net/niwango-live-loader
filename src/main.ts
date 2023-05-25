@@ -130,7 +130,7 @@ html,body,#canvas{
     iframe.srcdoc = Niwango_IFrame_SrcDoc;
     iframe.setAttribute(
       "style",
-      "position: relative; width: 100%; height: 100%;border: none;"
+      "position: relative; width: 100%; height: 100%;border: none;pointer-events: none;"
     );
     iframe.setAttribute("frameborder", "0");
     video.after(iframe);
