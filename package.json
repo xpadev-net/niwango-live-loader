@@ -1,0 +1,55 @@
+{
+  "name": "niwango-live-loader",
+  "version": "0.0.1",
+  "description": "niwango live loader",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c rollup.config.mjs",
+    "watch": "rollup -c rollup.config.mjs -w",
+    "check-types": "npx tsc --noEmit --jsx react",
+    "eslint": "eslint src/**/*.ts*",
+    "eslint:fix": "eslint src/**/*.ts* --fix",
+    "format": "prettier --write \"src/**/*.{tsx,ts,js,json,css,scss}\"",
+    "lint": "npm run eslint&&npm run check-types",
+    "lint:fix": "npm run eslint:fix&&npm run check-types&&npm run format",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xpadev-net/niwango-live-loader.git"
+  },
+  "author": "xpadev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xpadev-net/niwango-live-loader/issues"
+  },
+  "homepage": "https://github.com/xpadev-net/niwango-live-loader#readme",
+  "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-image": "^3.0.2",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-replace": "^5.0.2",
+    "@rollup/plugin-typescript": "^11.1.0",
+    "@types/babel__core": "^7.20.0",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "copyfiles": "^2.4.1",
+    "eslint": "^8.37.0",
+    "eslint-config-prettier": "8.8.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.0",
+    "prettier": "2.8.7",
+    "rimraf": "^4.4.1",
+    "rollup": "^3.20.2",
+    "typescript": "^5.0.3"
+  },
+  "dependencies": {
+    "tslib": "^2.5.2"
+  }
+}
