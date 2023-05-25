@@ -27,6 +27,7 @@ jobs:
         run: pnpm build
       - name: setup sandbox
         run: |
+          mkdir ./docs
           cp ./dist/bundle.js ./docs/
       - name: Create new Branch
         env:
