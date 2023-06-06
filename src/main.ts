@@ -72,9 +72,7 @@ const Niwango_IFrame_Id = "niwango-iframe";
 
   const addButton = async () => {
     if (document.getElementById(Niwango_Loader_Id)) return;
-    const wrapper = (
-      await getElement("GridCell CommentPanelMenuContainer-mainMenuArea")
-    )[0];
+    const wrapper = (await getElement("DropDownMenu"))[0];
     if (!wrapper) throw new Error("failed to get wrapper element");
     const loader = document.createElement("div");
     loader.innerHTML = "ﾆﾜ";
@@ -84,14 +82,14 @@ const Niwango_IFrame_Id = "niwango-iframe";
     );
     loader.onclick = setup;
     loader.id = Niwango_Loader_Id;
-    wrapper.append(loader);
+    wrapper.after(loader);
   };
 
   const init = async () => {
     clearInterval(interval);
     const commentListTab = Array.from(
       await getElement("PlayerPanelContainer-tabItem")
-    ).filter((element) => (element.innerText = "コメントリスト"))[0];
+    ).filter((element) => element.innerText === "コメントリスト")[0];
     if (!commentListTab)
       throw new Error("failed to get commentListTab element");
     commentListTab.addEventListener("click", () => void addButton());
