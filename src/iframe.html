@@ -73,7 +73,7 @@
                 const newer = json.version.match(/(?<major>\d)\.(?<minor>\d)\.(?<patched>\d)/);
                 const current = '[VI]{version}[/VI]'.match(/(?<major>\d)\.(?<minor>\d)\.(?<patched>\d)/);
                 const element = document.createElement("div");
-                element.innerHTML = `<div style="position: absolute;right: 0;bottom: 0;font-size: 15px;color: #fff;background: rgba(0,0,0,0.5);">最新版への更新をお願いします</div>`
+                element.innerHTML = `<div style="position: absolute;right: 0;bottom: 0;font-size: 20px;color: #fff;background: rgba(0,0,0,0.5);padding: 10px;">新しいバージョンがリリースされています。最新版への更新をお願いします</div>`
                 document.body.append(element);
                 if (newer.groups.major === current.groups.major){
                     setTimeout(()=>element.remove(),5000);
@@ -81,7 +81,7 @@
             }
         }catch (_){
             const element = document.createElement("div");
-            element.innerHTML = `<div style="position: absolute;right: 0;bottom: 0;font-size: 15px;color: #fff;background: rgba(0,0,0,0.5);">バージョン情報の取得に失敗しました<br>ネットワークの接続とUserScriptの更新を確認してください</div>`
+            element.innerHTML = `<div style="position: absolute;right: 0;bottom: 0;font-size: 20px;color: #fff;background: rgba(0,0,0,0.5);padding: 10px;">バージョン情報の取得に失敗しました<br>ネットワークの接続とUserScriptの更新を確認してください</div>`
             document.body.append(element);
             setTimeout(()=>element.remove(),5000);
         }
