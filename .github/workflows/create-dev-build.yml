@@ -38,6 +38,7 @@ jobs:
       - name: setup sandbox
         run: |
           cp ./dist/bundle.js ./docs/niwango-live-loader.user.js
+          cp ./package.json ./docs/package.json
       - name: Create new Branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
