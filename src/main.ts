@@ -1,89 +1,10 @@
 import { typeguard } from "@/typeguard";
 import { ThreadsApiThread } from "@/@types/threads";
 import { NiwangoIframe } from "@/@types/iframe";
+import Niwango_IFrame_SrcDoc from "./iframe.html";
 
 const Niwango_Loader_Id = "niwango-loader";
 const Niwango_IFrame_Id = "niwango-iframe";
-const Niwango_IFrame_SrcDoc = `
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <script src="https://xpadev-net.github.io/niconicomments/bundle.js"></script>
-  <script src="https://xpadev-net.github.io/niwango.js/bundle.js"></script>
-</head>
-<body>
-  <canvas id="canvas" width="1920" height="1080"></canvas>
-  <div id="loading">読み込み中...</div>
-</body>
-<script>
-let nico,interval=0,currentTime=0,videoMicroSec=false;
-const canvasElement = document.getElementById("canvas");
-const updateCanvas = () => {
-  if (!nico) return;
-  if (!videoMicroSec) {
-    nico.drawCanvas(Math.floor(currentTime * 100));
-  } else {
-    nico.drawCanvas(
-      Math.floor(
-        (performance.now() - videoMicroSec.microsec) / 10 +
-          videoMicroSec.currentTime * 100
-      )
-    );
-  }
-};
-const init = (data) => {
-  document.getElementById("loading").remove();
-  nico = new NiconiComments(canvasElement, data, {
-    format: "v1",
-    config: {
-      plugins: window.Niwango ? [window.Niwango] : [],
-    },
-  });
-  if (!interval){
-    interval = setInterval(updateCanvas, 1);
-  }
-}
-
-const updateTime = (currentTime, paused) => {
-  if (!paused) {
-    videoMicroSec = {
-      currentTime: currentTime,
-      microsec: performance.now(),
-    };
-  } else {
-    videoMicroSec = false;
-  }
-};
-window.init=init;
-window.updateTime=updateTime;
-</script>
-<style>
-*{
-  margin: 0;
-  padding: 0;
-}
-html,body,#canvas{
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  overflow: hidden;
-}
-#loading{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  font-size: 50px;
-  color: #fff;
-  background: rgba(0,0,0,0.5);
-}
-#canvas{
-  object-fit: contain;
-}
-</style>
-</html>
-`;
 
 (function () {
   "use strict";
@@ -138,6 +59,9 @@ html,body,#canvas{
       iframe.contentWindow.init(lastComment);
       iframe.contentWindow.updateTime(0, true);
       interval = window.setInterval(() => {
+        if (!iframe){
+          clearInterval(interval);
+        }
         const currentTime = window.__videoplayer.currentTime();
         const paused = window.__videoplayer.paused();
         iframe.contentWindow.updateTime(currentTime, paused);
@@ -172,6 +96,7 @@ html,body,#canvas{
     commentListTab.addEventListener("click", () => void addButton());
     void addButton();
     const observer = new MutationObserver(() => {
+      observer.disconnect();
       document.getElementById(Niwango_IFrame_Id)?.remove();
     });
     const canonicalLink = document.querySelector("link[rel=canonical]");

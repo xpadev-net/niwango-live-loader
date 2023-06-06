@@ -5,6 +5,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
+import html from 'rollup-plugin-html';
 
 const banner = `// ==UserScript==
 // @name         niwango.js live loader
@@ -38,6 +39,9 @@ const banner = `// ==UserScript==
 `
 
 const plugins = [
+	html({
+		include: 'src/**/*.html'
+	}),
 	typescript(),
 	json(),
 	image(),
