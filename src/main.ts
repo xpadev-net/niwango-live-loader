@@ -46,6 +46,7 @@ const Niwango_IFrame_Id = "niwango-iframe";
     const video = player.getElementsByTagName("video")[0];
     if (!video) throw new Error("failed to get video element");
     document.getElementById(Niwango_IFrame_Id)?.remove();
+    clearInterval(interval);
     const iframe = document.createElement("iframe") as NiwangoIframe;
     iframe.id = Niwango_IFrame_Id;
     iframe.srcdoc = Niwango_IFrame_SrcDoc;
@@ -59,12 +60,12 @@ const Niwango_IFrame_Id = "niwango-iframe";
       iframe.contentWindow.init(lastComment);
       iframe.contentWindow.updateTime(0, true);
       interval = window.setInterval(() => {
-        if (!iframe){
+        if (!iframe) {
           clearInterval(interval);
         }
         const currentTime = window.__videoplayer.currentTime();
         const paused = window.__videoplayer.paused();
-        iframe.contentWindow.updateTime(currentTime, paused);
+        iframe.contentWindow?.updateTime(currentTime, paused);
       }, 100);
     };
   };
