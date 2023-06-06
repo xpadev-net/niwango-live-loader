@@ -7,11 +7,12 @@ import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 import html from 'rollup-plugin-html';
 import versionInjector from "rollup-plugin-version-injector";
+import pkg from "./package.json" assert { type: "json" };
 
 const banner = `// ==UserScript==
 // @name         niwango.js live loader
 // @namespace    https://xpadev.net/
-// @version      0.0.1
+// @version      ${pkg.version}
 // @description  ニコニコ動画上でニワン語を実行するための試験的スクリプト
 // @author       xpadev
 // @match        https://www.nicovideo.jp/watch/*
