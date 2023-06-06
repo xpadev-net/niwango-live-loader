@@ -1,24 +1,25 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <script src="https://xpadev-net.github.io/niconicomments/bundle.js"></script>
-    <script src="https://xpadev-net.github.io/niwango.js/bundle.js"></script>
+    <script src="https://xpadev-net.github.io/niwango.js/niwango.js"></script>
 </head>
 <body>
 <canvas id="canvas" width="1920" height="1080"></canvas>
 <div id="loading">読み込み中...</div>
 </body>
 <script>
-    let nico,interval=0,currentTime=0,videoMicroSec=false;
+    let niwango,interval=0,currentTime=0,videoMicroSec=false;
     const canvasElement = document.getElementById("canvas");
+    const context = canvasElement.getContext("2d");
     const updateCanvas = () => {
-        if (!nico) return;
+        if (!niwango) return;
+        context.clearRect(0,0,canvasElement.width,canvasElement.height);
         if (!videoMicroSec) {
-            nico.drawCanvas(Math.floor(currentTime * 100));
+            niwango.draw(Math.floor(currentTime * 100));
         } else {
-            nico.drawCanvas(
+            niwango.draw(
                 Math.floor(
                     (performance.now() - videoMicroSec.microsec) / 10 +
                     videoMicroSec.currentTime * 100
@@ -26,14 +27,27 @@
             );
         }
     };
-    const init = (data) => {
+    const init = (threads) => {
         document.getElementById("loading").remove();
-        nico = new NiconiComments(canvasElement, data, {
-            format: "v1",
-            config: {
-                plugins: window.Niwango ? [window.Niwango] : [],
-            },
-        });
+        const comments = [];
+        for (const thread of threads){
+            for (const comment of thread.comments){
+                comments.push({
+                    message: comment.body,
+                    vpos: Math.floor(comment.vposMs/10)/100,
+                    isYourPost: comment.isMyPost,
+                    mail: comment.commands.join(" "),
+                    fromButton: false,
+                    color: 0,
+                    size: 0,
+                    no: comment.no,
+                    _vpos: Math.floor(comment.vposMs/10),
+                    _owner: thread.fork === "owner"
+                });
+            }
+        }
+
+        niwango=new Niwango(canvasElement,comments)
         if (!interval){
             interval = setInterval(updateCanvas, 1);
         }
@@ -51,6 +65,23 @@
     };
     window.init=init;
     window.updateTime=updateTime;
+    window.onload = async() => {
+        try{
+            const req = await fetch("https://xpadev-net.github.io/niwango-live-loader/package.json");
+            const json = await req.json();
+            if (json.version !== '[VI]{version}[/VI]') {
+                const element = document.createElement("div");
+                element.innerHTML = `<div style="position: absolute;right: 0;bottom: 0;font-size: 15px;color: #fff;background: rgba(0,0,0,0.5);">最新版への更新をお願いします</div>`
+                document.body.append(element);
+                setTimeout(()=>element.remove(),5000);
+            }
+        }catch (_){
+            const element = document.createElement("div");
+            element.innerHTML = `<div style="position: absolute;right: 0;bottom: 0;font-size: 15px;color: #fff;background: rgba(0,0,0,0.5);">バージョン情報の取得に失敗しました<br>ネットワークの接続とUserScriptの更新を確認してください</div>`
+            document.body.append(element);
+            setTimeout(()=>element.remove(),5000);
+        }
+    }
 </script>
 <style>
     *{
