@@ -14,7 +14,6 @@
     const context = canvasElement.getContext("2d");
     const updateCanvas = () => {
         if (!niwango) return;
-        context.clearRect(0,0,canvasElement.width,canvasElement.height);
         if (!videoMicroSec) {
             niwango.draw(Math.floor(currentTime * 100));
         } else {
