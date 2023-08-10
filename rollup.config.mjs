@@ -44,7 +44,11 @@ const plugins = [
 	html({
 		include: 'src/**/*.html'
 	}),
-	versionInjector(),
+	versionInjector({
+		injectInTags: {
+			fileRegexp: /\.(js|html|css|ts|tsx)$/,
+		},
+	}),
 	typescript(),
 	json(),
 	image(),

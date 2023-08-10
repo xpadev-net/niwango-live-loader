@@ -64,12 +64,13 @@
     window.init=init;
     window.updateTime=updateTime;
     window.onload = async() => {
+        const currentVersion = '[VI]{version}[/VI]';
         try{
             const req = await fetch("https://xpadev-net.github.io/niwango-live-loader/package.json");
             const json = await req.json();
-            if (json.version !== '[VI]{version}[/VI]') {
+            if (json.version !== currentVersion) {
                 const newer = json.version.match(/(?<major>\d)\.(?<minor>\d)\.(?<patched>\d)/);
-                const current = '[VI]{version}[/VI]'.match(/(?<major>\d)\.(?<minor>\d)\.(?<patched>\d)/);
+                const current = currentVersion.match(/(?<major>\d)\.(?<minor>\d)\.(?<patched>\d)/);
                 const element = document.createElement("div");
                 element.innerHTML = `<div style="position: absolute;right: 0;bottom: 0;font-size: 20px;color: #fff;background: rgba(0,0,0,0.5);padding: 10px;">新しいバージョンがリリースされています。最新版への更新をお願いします</div>`
                 document.body.append(element);
