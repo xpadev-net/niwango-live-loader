@@ -1,6 +1,6 @@
 {
   "name": "niwango-live-loader",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "niwango live loader",
   "main": "dist/index.js",
   "type": "module",
