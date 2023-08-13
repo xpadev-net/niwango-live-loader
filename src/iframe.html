@@ -11,7 +11,6 @@
 <script>
     let niwango,interval=0,currentTime=0,videoMicroSec=false;
     const canvasElement = document.getElementById("canvas");
-    const context = canvasElement.getContext("2d");
     const updateCanvas = () => {
         if (!niwango) return;
         if (!videoMicroSec) {
@@ -51,13 +50,14 @@
         }
     }
 
-    const updateTime = (currentTime, paused) => {
+    const updateTime = (_currentTime, paused) => {
         if (!paused) {
             videoMicroSec = {
-                currentTime: currentTime,
+                currentTime: _currentTime,
                 microsec: performance.now(),
             };
         } else {
+            currentTime = _currentTime;
             videoMicroSec = false;
         }
     };
