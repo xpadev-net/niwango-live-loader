@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <script src="https://unpkg.com/@xpadev-net/niconicomments@0.2.60/dist/bundle.js"></script>
+    <script src="https://unpkg.com/@xpadev-net/niconicomments-plugin-niwango@0.0.10/dist/bundle.js"></script>
     <script src="https://xpadev-net.github.io/niwango.js/niwango.js"></script>
 </head>
 <body>
@@ -9,42 +11,29 @@
 <div id="loading">読み込み中...</div>
 </body>
 <script>
-    let niwango,interval=0,currentTime=0,videoMicroSec=false;
+    let nico,interval=0,currentTime=0,videoMicroSec=false,cursorPos={x:0,y:0};
     const canvasElement = document.getElementById("canvas");
-    const updateCanvas = () => {
-        if (!niwango) return;
+    const vpos = () => {
         if (!videoMicroSec) {
-            niwango.draw(Math.floor(currentTime * 100));
-        } else {
-            niwango.draw(
-                Math.floor(
-                    (performance.now() - videoMicroSec.microsec) / 10 +
-                    videoMicroSec.currentTime * 100
-                )
-            );
+            return Math.floor(currentTime * 100);
         }
+        return Math.floor(
+          (performance.now() - videoMicroSec.microsec) / 10 +
+          videoMicroSec.currentTime * 100
+        );
+    }
+    const updateCanvas = () => {
+        if (!nico) return;
+        nico.drawCanvas(vpos(),true,cursorPos);
     };
-    const init = (threads) => {
+    const init = (data) => {
         document.getElementById("loading").remove();
-        const comments = [];
-        for (const thread of threads){
-            for (const comment of thread.comments){
-                comments.push({
-                    message: comment.body,
-                    vpos: Math.floor(comment.vposMs/10)/100,
-                    isYourPost: comment.isMyPost,
-                    mail: comment.commands.join(" "),
-                    fromButton: false,
-                    color: 0,
-                    size: 0,
-                    no: comment.no,
-                    _vpos: Math.floor(comment.vposMs/10),
-                    _owner: thread.fork === "owner"
-                });
-            }
-        }
-
-        niwango=new Niwango(canvasElement,comments)
+        nico = new NiconiComments(canvasElement, data, {
+            format: "v1",
+            config: {
+                plugins: window.PluginNiwango ? [window.PluginNiwango(window.Niwango)] : [],
+            },
+        });
         if (!interval){
             interval = setInterval(updateCanvas, 1);
         }
@@ -84,6 +73,21 @@
             document.body.append(element);
             setTimeout(()=>element.remove(),5000);
         }
+    }
+    canvasElement.onmousemove = (e) => {
+        cursorPos = {
+            x: e.offsetX * (canvasElement.width / canvasElement.clientWidth),
+            y: e.offsetY * (canvasElement.height / canvasElement.clientHeight),
+        }
+    }
+    canvasElement.onmouseout = () => {
+        cursorPos = undefined;
+    }
+    canvasElement.onclick = (e) => {
+        nico.click(vpos(),{
+            x: e.offsetX * (canvasElement.width / canvasElement.clientWidth),
+            y: e.offsetY * (canvasElement.height / canvasElement.clientHeight),
+        });
     }
 </script>
 <style>

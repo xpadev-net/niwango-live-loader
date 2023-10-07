@@ -15,13 +15,7 @@ const Niwango_IFrame_Id = "niwango-iframe";
     if (args[0] === "https://nvcomment.nicovideo.jp/v1/threads") {
       const result = (await request.clone().json()) as unknown;
       if (typeguard.threadsApiResponse(result)) {
-        lastComment = result.data.threads.map((thread) => {
-          thread.comments = thread.comments.map((comment) => {
-            comment.commands.push("invisible");
-            return comment;
-          });
-          return thread;
-        });
+        lastComment = result.data.threads;
       }
     }
     return request;
@@ -41,10 +35,19 @@ const Niwango_IFrame_Id = "niwango-iframe";
   let interval = 0;
 
   const setup = async () => {
-    const player = (await getElement("MainVideoPlayer"))[0];
+    const player = (await getElement("VideoContainer"))[0];
     if (!player) throw new Error("failed to get player element");
-    const video = player.getElementsByTagName("video")[0];
-    if (!video) throw new Error("failed to get video element");
+    const CommentRenderer = player.getElementsByClassName("CommentRenderer")[0];
+    if (!CommentRenderer)
+      throw new Error("failed to get CommentRenderer element");
+    const commentCanvas = CommentRenderer.getElementsByTagName("canvas")[0];
+    if (!commentCanvas) throw new Error("failed to get commentCanvas element");
+    const eventHandlerCanvas = player.getElementsByClassName(
+      "VideoSymbolContainer-canvas"
+    )[0];
+    if (!eventHandlerCanvas)
+      throw new Error("failed to get eventHandlerCanvas element");
+    commentCanvas.style.display = "none";
     document.getElementById(Niwango_IFrame_Id)?.remove();
     clearInterval(interval);
     const iframe = document.createElement("iframe") as NiwangoIframe;
@@ -52,10 +55,10 @@ const Niwango_IFrame_Id = "niwango-iframe";
     iframe.srcdoc = Niwango_IFrame_SrcDoc;
     iframe.setAttribute(
       "style",
-      "position: relative; width: 100%; height: 100%;border: none;pointer-events: none;"
+      "position: absolute;left: 0;top: 0; width: 100%; height: 100%;border: none;"
     );
     iframe.setAttribute("frameborder", "0");
-    video.after(iframe);
+    eventHandlerCanvas.after(iframe);
     iframe.onload = () => {
       iframe.contentWindow.init(lastComment);
       iframe.contentWindow.updateTime(0, true);
