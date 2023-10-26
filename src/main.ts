@@ -45,7 +45,7 @@ const Niwango_IFrame_Id = "niwango-iframe";
     const commentCanvas = CommentRenderer.getElementsByTagName("canvas")[0];
     if (!commentCanvas) throw new Error("failed to get commentCanvas element");
     const eventHandlerCanvas = player.getElementsByClassName(
-      "VideoSymbolContainer-canvas"
+      "VideoSymbolContainer-canvas",
     )[0];
     if (!eventHandlerCanvas)
       throw new Error("failed to get eventHandlerCanvas element");
@@ -57,7 +57,7 @@ const Niwango_IFrame_Id = "niwango-iframe";
     iframe.srcdoc = Niwango_IFrame_SrcDoc;
     iframe.setAttribute(
       "style",
-      "position: absolute;left: 0;top: 0; width: 100%; height: 100%;border: none;"
+      "position: absolute;left: 0;top: 0; width: 100%; height: 100%;border: none;",
     );
     iframe.setAttribute("frameborder", "0");
     eventHandlerCanvas.after(iframe);
@@ -83,7 +83,7 @@ const Niwango_IFrame_Id = "niwango-iframe";
     loader.innerHTML = "ﾆﾜ";
     loader.setAttribute(
       "style",
-      "display: inline-block;padding: 4px;border: solid 1px;margin: 4px;cursor:pointer;"
+      "display: inline-block;padding: 4px;border: solid 1px;margin: 4px;cursor:pointer;",
     );
     loader.onclick = setup;
     loader.id = Niwango_Loader_Id;
@@ -93,7 +93,7 @@ const Niwango_IFrame_Id = "niwango-iframe";
   const init = async () => {
     clearInterval(interval);
     const commentListTab = Array.from(
-      await getElement("PlayerPanelContainer-tabItem")
+      await getElement("PlayerPanelContainer-tabItem"),
     ).filter((element) => element.innerText === "コメントリスト")[0];
     if (!commentListTab)
       throw new Error("failed to get commentListTab element");
