@@ -12,7 +12,9 @@ const Niwango_IFrame_Id = "niwango-iframe";
   const originalFetch = window.fetch;
   window.fetch = async function (...args) {
     const request = await originalFetch(...args);
-    if (args[0] === "https://nvcomment.nicovideo.jp/v1/threads") {
+    if (
+      `${args[0]}`.match(/^https:\/\/nv-?comment\.nicovideo\.jp\/v1\/threads$/)
+    ) {
       const result = (await request.clone().json()) as unknown;
       if (typeguard.threadsApiResponse(result)) {
         lastComment = result.data.threads;
