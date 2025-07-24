@@ -1,13 +1,13 @@
-import babel from '@rollup/plugin-babel';
-import {nodeResolve} from '@rollup/plugin-node-resolve';
+import babel from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
+import image from "@rollup/plugin-image";
+import json from "@rollup/plugin-json";
+import { nodeResolve } from "@rollup/plugin-node-resolve";
+import replace from "@rollup/plugin-replace";
 import typescript from "@rollup/plugin-typescript";
-import commonjs from '@rollup/plugin-commonjs';
-import replace from '@rollup/plugin-replace';
-import image from '@rollup/plugin-image';
-import json from '@rollup/plugin-json';
-import html from 'rollup-plugin-html';
+import html from "rollup-plugin-html";
 import versionInjector from "rollup-plugin-version-injector";
-import pkg from "./package.json" assert { type: "json" };
+import pkg from "./package.json" with { type: "json" };
 
 const banner = `// ==UserScript==
 // @name         niwango.js live loader
@@ -38,44 +38,44 @@ const banner = `// ==UserScript==
  * # 更新について
  * GitHub上に公開されている最新のコードを自動的に読み込むため、基本的に更新は必要ありません
  */
-`
+`;
 
 const plugins = [
-	html({
-		include: 'src/**/*.html'
-	}),
-	versionInjector({
-		injectInTags: {
-			fileRegexp: /\.(js|html|css|ts|tsx)$/,
-		},
-	}),
-	typescript(),
-	json(),
-	image(),
-	nodeResolve({
-		extensions: [".js"],
-		browser:true
-	}),
-	replace({
-		preventAssignment: true,
-		'process.env.NODE_ENV': JSON.stringify('production'),
-	}),
-	babel({
-		babelHelpers: 'bundled',
-		presets: [],
-	}),
-	commonjs(),
+  html({
+    include: "src/**/*.html",
+  }),
+  versionInjector({
+    injectInTags: {
+      fileRegexp: /\.(js|html|css|ts|tsx)$/,
+    },
+  }),
+  typescript(),
+  json(),
+  image(),
+  nodeResolve({
+    extensions: [".js"],
+    browser: true,
+  }),
+  replace({
+    preventAssignment: true,
+    "process.env.NODE_ENV": JSON.stringify("production"),
+  }),
+  babel({
+    babelHelpers: "bundled",
+    presets: [],
+  }),
+  commonjs(),
 ];
 
 export default [
-	{
-		input: 'src/main.ts',
-		output: {
-			file: "dist/bundle.js",
-			format: "umd",
-			name: "niwango_live_loader",
-			banner,
-		},
-		plugins: plugins,
-	}
-	]
+  {
+    input: "src/main.ts",
+    output: {
+      file: "dist/bundle.js",
+      format: "umd",
+      name: "niwango_live_loader",
+      banner,
+    },
+    plugins: plugins,
+  },
+];
