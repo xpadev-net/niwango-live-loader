@@ -15,7 +15,7 @@
     "format:fix": "biome format --write src",
     "lint": "biome check src",
     "lint:fix": "biome check --write --unsafe src",
-    "prepare": "husky install"
+    "prepare": "lefthook install"
   },
   "repository": {
     "type": "git",
@@ -40,8 +40,7 @@
     "@types/babel__core": "^7.20.3",
     "@types/node": "^18.15.11",
     "copyfiles": "^2.4.1",
-    "husky": "^8.0.3",
-    "lint-staged": "^14.0.1",
+    "lefthook": "^1.12.2",
     "rimraf": "^5.0.5",
     "rollup": "^4.1.4",
     "rollup-plugin-html": "^0.2.1",
