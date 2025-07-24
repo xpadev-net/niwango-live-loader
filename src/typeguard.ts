@@ -1,4 +1,4 @@
-import { ThreadsApiResponse } from "@/@types/threads";
+import type { ThreadsApiResponse } from "@/@types/threads";
 
 const typeguard = {
   threadsApiResponse: (i: unknown): i is ThreadsApiResponse =>

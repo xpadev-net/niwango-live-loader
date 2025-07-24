@@ -1,16 +1,15 @@
+import type { NiwangoIframe } from "@/@types/iframe";
+import type { ThreadsApiThread } from "@/@types/threads";
 import { typeguard } from "@/typeguard";
-import { ThreadsApiThread } from "@/@types/threads";
-import { NiwangoIframe } from "@/@types/iframe";
 import Niwango_IFrame_SrcDoc from "./iframe.html";
 
 const Niwango_Loader_Id = "niwango-loader";
 const Niwango_IFrame_Id = "niwango-iframe";
 
-(function () {
-  "use strict";
+(() => {
   let lastComment: ThreadsApiThread[];
   const originalFetch = window.fetch;
-  window.fetch = async function (...args) {
+  window.fetch = async (...args) => {
     const request = await originalFetch(...args);
     if (
       `${args[0]}`.match(/^https:\/\/nv-?comment\.nicovideo\.jp\/v1\/threads$/)
