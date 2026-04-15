@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import babel from "@rollup/plugin-babel";
 import commonjs from "@rollup/plugin-commonjs";
 import image from "@rollup/plugin-image";
@@ -5,9 +7,20 @@ import json from "@rollup/plugin-json";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import replace from "@rollup/plugin-replace";
 import typescript from "@rollup/plugin-typescript";
-import html from "rollup-plugin-html";
 import versionInjector from "rollup-plugin-version-injector";
 import pkg from "./package.json" with { type: "json" };
+
+const iframeHtmlPath = fileURLToPath(
+  new URL("./src/iframe.html", import.meta.url),
+);
+
+const rawIframeHtml = {
+  name: "raw-iframe-html",
+  load(id) {
+    if (id !== iframeHtmlPath) return null;
+    return `export default ${JSON.stringify(readFileSync(id, "utf8"))};`;
+  },
+};
 
 const banner = `// ==UserScript==
 // @name         niwango.js live loader
@@ -41,9 +54,7 @@ const banner = `// ==UserScript==
 `;
 
 const plugins = [
-  html({
-    include: "src/**/*.html",
-  }),
+  rawIframeHtml,
   versionInjector({
     injectInTags: {
       fileRegexp: /\.(js|html|css|ts|tsx)$/,

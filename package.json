@@ -28,9 +28,9 @@
   },
   "homepage": "https://github.com/xpadev-net/niwango-live-loader#readme",
   "devDependencies": {
-    "@babel/core": "^7.28.0",
-    "@biomejs/biome": "^2.1.2",
-    "@rollup/plugin-babel": "^6.0.4",
+    "@babel/core": "^7.29.0",
+    "@biomejs/biome": "^2.4.10",
+    "@rollup/plugin-babel": "^6.1.0",
     "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-image": "^3.0.3",
     "@rollup/plugin-json": "^6.1.0",
@@ -38,15 +38,15 @@
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/babel__core": "^7.20.5",
-    "@types/node": "^18.19.120",
+    "@types/node": "^18.19.130",
     "copyfiles": "^2.4.1",
-    "lefthook": "^1.12.2",
+    "lefthook": "^1.13.6",
     "rimraf": "^5.0.10",
-    "rollup": "^4.45.1",
-    "rollup-plugin-html": "^0.2.1",
+    "rollup": "^4.60.1",
+    "@rollup/plugin-html": "^2.0.0",
     "rollup-plugin-version-injector": "^1.3.3",
     "tslib": "^2.8.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
